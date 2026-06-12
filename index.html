@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cicilan Motor Honda Genio</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --red: #D72B2B;
+      --red-dark: #A81E1E;
+      --red-light: #FF4444;
+      --cream: #FDF8F3;
+      --dark: #1A1A1A;
+      --mid: #4A4A4A;
+      --muted: #8A8A8A;
+      --border: #E8E0D8;
+      --white: #FFFFFF;
+      --green: #2D9F5D;
+      --green-bg: #EBF8F1;
+      --yellow: #E6A817;
+      --yellow-bg: #FEF7E6;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, var(--red-dark) 0%, var(--red) 60%, #FF5A5A 100%);
+      color: white;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: 40px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 28px 24px 24px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .header-icon {
+      width: 56px; height: 56px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+    .header-text h1 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .header-text p {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-top: 3px;
+    }
+
+    /* SUMMARY CARDS */
+    .summary-bar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .summary-card {
+      padding: 18px 20px;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .summary-card:last-child { border-right: none; }
+    .summary-card .s-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .summary-card .s-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 19px;
+      font-weight: 600;
+      margin-top: 4px;
+      color: var(--dark);
+    }
+    .summary-card.highlight .s-value { color: var(--red); }
+    .summary-card .s-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* MAIN */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    /* ACTION BAR */
+    .action-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--red);
+      color: white;
+      border: none;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      transition: background 0.18s, transform 0.12s;
+    }
+    .btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .btn-secondary {
+      background: white;
+      color: var(--dark);
+      border: 1.5px solid var(--border);
+      padding: 11px 20px;
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      transition: border-color 0.18s;
+    }
+    .btn-secondary:hover { border-color: var(--red); color: var(--red); }
+
+    /* PROGRESS BAR */
+    .progress-section {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .progress-title { font-size: 14px; font-weight: 700; }
+    .progress-pct {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--red);
+    }
+    .progress-track {
+      background: #F0EBE6;
+      border-radius: 99px;
+      height: 10px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--red-dark), var(--red-light));
+      transition: width 0.6s ease;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* TABLE */
+    .table-wrap {
+      background: white;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .table-header {
+      padding: 18px 24px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .table-title { font-size: 15px; font-weight: 700; }
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+    }
+    .filter-tab {
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      background: #F5F0EC;
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+    .filter-tab.active {
+      background: #FEE8E8;
+      color: var(--red);
+      border-color: #F5B8B8;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead th {
+      background: #FAFAF8;
+      padding: 11px 16px;
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr {
+      border-bottom: 1px solid #F5F2EE;
+      transition: background 0.12s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #FDF9F7; }
+    td {
+      padding: 14px 16px;
+      font-size: 13.5px;
+      vertical-align: middle;
+    }
+    .bulan-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--dark);
+    }
+    .tanggal-cell {
+      color: var(--mid);
+      font-size: 13px;
+    }
+    .jumlah-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: var(--dark);
+      font-size: 13px;
+    }
+    .jenis-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 99px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .jenis-transfer { background: #E8F0FE; color: #1967D2; }
+    .jenis-tunai     { background: var(--green-bg); color: var(--green); }
+    .jenis-va        { background: var(--yellow-bg); color: var(--yellow); }
+    .jenis-qris      { background: #F3E8FF; color: #7B2FBE; }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px;
+      border-radius: 99px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .status-lunas  { background: var(--green-bg); color: var(--green); }
+    .status-belum  { background: var(--yellow-bg); color: #B87A00; }
+    .status-telat  { background: #FEE8E8; color: var(--red); }
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .dot-lunas { background: var(--green); }
+    .dot-belum { background: var(--yellow); }
+    .dot-telat { background: var(--red); }
+
+    .struk-btn {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex; align-items: center; gap: 5px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .struk-btn:hover { border-color: var(--red); color: var(--red); }
+    .struk-btn.has-foto { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+    .action-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 16px; padding: 4px;
+      border-radius: 6px; transition: color 0.15s;
+    }
+    .action-btn:hover { color: var(--red); }
+
+    /* EMPTY STATE */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--muted);
+    }
+    .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-state p { font-size: 14px; }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: white;
+      border-radius: 20px;
+      width: 100%; max-width: 500px;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(20px);
+      transition: transform 0.2s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-head {
+      padding: 22px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      position: sticky; top: 0; background: white; z-index: 1;
+      border-radius: 20px 20px 0 0;
+    }
+    .modal-head h2 { font-size: 17px; font-weight: 800; }
+    .close-btn {
+      background: #F0EBE6; border: none; cursor: pointer;
+      width: 30px; height: 30px; border-radius: 50%;
+      font-size: 16px; display: flex; align-items: center; justify-content: center;
+      color: var(--mid); transition: background 0.15s;
+    }
+    .close-btn:hover { background: #FFDADA; color: var(--red); }
+    .modal-body { padding: 20px 24px 24px; }
+
+    /* FORM */
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      color: var(--dark);
+      background: var(--cream);
+      transition: border-color 0.15s;
+      outline: none;
+    }
+    .form-group input:focus, .form-group select:focus {
+      border-color: var(--red);
+      background: white;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* FOTO UPLOAD */
+    .foto-upload-area {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      background: var(--cream);
+    }
+    .modal-footer {
+      padding: 0 24px 24px;
+      display: flex; gap: 10px;
+    }
+    .btn-full { flex: 1; justify-content: center; }
+
+    /* FOTO MODAL */
+    .foto-modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 200;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .foto-modal-overlay.open { opacity: 1; pointer-events: all; }
+    .foto-modal-inner {
+      position: relative;
+      max-width: 90vw; max-height: 90vh;
+    }
+    .foto-modal-inner img {
+      max-width: 100%; max-height: 85vh;
+      border-radius: 12px;
+    }
+    .foto-close-btn {
+      position: absolute; top: -16px; right: -16px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: white; border: none; cursor: pointer;
+      font-size: 18px; display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow);
+    }
+
+    /* CONFIRM DIALOG */
+    .confirm-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 400;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .confirm-overlay.open { opacity: 1; pointer-events: all; }
+    .confirm-box {
+      background: white;
+      border-radius: 16px;
+      padding: 28px 24px 20px;
+      max-width: 320px; width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      transform: scale(0.92);
+      transition: transform 0.2s;
+    }
+    .confirm-overlay.open .confirm-box { transform: scale(1); }
+    .confirm-box .c-icon { font-size: 36px; margin-bottom: 10px; }
+    .confirm-box h3 { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+    .confirm-box p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .confirm-btns { display: flex; gap: 10px; }
+    .confirm-btns button { flex: 1; padding: 11px; border-radius: 10px; font-family: 'Plus Jakarta Sans',sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; border: none; }
+    .confirm-cancel { background: #F0EBE6; color: var(--mid); }
+    .confirm-ok { background: var(--red); color: white; }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--dark);
+      color: white;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      z-index: 300;
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 640px) {
+      .summary-grid { grid-template-columns: 1fr 1fr; }
+      .summary-card { border-bottom: 1px solid var(--border); }
+      .summary-card:nth-child(2n) { border-right: none; }
+      .form-row { grid-template-columns: 1fr; }
+      thead th:nth-child(5), td:nth-child(5) { display: none; }
+      thead th:nth-child(6), td:nth-child(6) { display: none; }
+      .header-inner { gap: 14px; }
+      .header-text h1 { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="header-icon">🏍️</div>
+    <div class="header-text">
+      <h1>Cicilan Honda Genio</h1>
+      <p>No. Cicilan: <strong>537000557826</strong> &nbsp;·&nbsp; Pantau semua pembayaran</p>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary-bar">
+    <div class="summary-grid">
+      <div class="summary-card highlight">
+        <div class="s-label">Total Cicilan</div>
+        <div class="s-value" id="sum-total">Rp 0</div>
+        <div class="s-sub" id="sum-bulan-total">0 Bulan</div>
+      </div>
+      <div class="summary-card">
+        <div class="s-label">Sudah Dibayar</div>
+        <div class="s-value" id="sum-bayar">Rp 0</div>
+        <div class="s-sub" id="sum-lunas-bulan">0 bulan</div>
+      </div>
+      <div class="summary-card">
+        <div class="s-label">Sisa Tagihan</div>
+        <div class="s-value" id="sum-sisa">Rp 0</div>
+        <div class="s-sub" id="sum-sisa-bulan">0 bulan tersisa</div>
+      </div>
+      <div class="summary-card">
+        <div class="s-label">Tagihan Berikutnya</div>
+        <div class="s-value" id="sum-next">—</div>
+        <div class="s-sub" id="sum-next-date">—</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="progress-header">
+      <span class="progress-title">📊 Progress Pelunasan</span>
+      <span class="progress-pct" id="pct-text">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="progress-meta">
+      <span id="meta-lunas">0 bulan lunas</span>
+      <span id="meta-sisa">0 bulan belum</span>
+    </div>
+  </div>
+
+  <!-- ACTION BAR -->
+  <div class="action-bar">
+    <button class="btn-primary" onclick="openModal()">
+      <span>＋</span> Tambah Pembayaran
+    </button>
+    <button class="btn-secondary" onclick="filterData('semua')">
+      📋 Semua
+    </button>
+    <button class="btn-secondary" onclick="filterData('belum')">
+      ⏳ Belum Bayar
+    </button>
+    <button class="btn-secondary" onclick="exportData()">
+      ⬇ Export
+    </button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <span class="table-title">Riwayat Pembayaran</span>
+      <div class="filter-tabs">
+        <span class="filter-tab active" onclick="setTab(this,'semua')">Semua</span>
+        <span class="filter-tab" onclick="setTab(this,'lunas')">Lunas</span>
+        <span class="filter-tab" onclick="setTab(this,'belum')">Belum</span>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>Bulan</th>
+            <th>Tanggal Bayar</th>
+            <th>Jumlah</th>
+            <th>Jenis</th>
+            <th>Status</th>
+            <th>Struk</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+      </table>
+      <div id="empty-state" class="empty-state" style="display:none;">
+        <div class="empty-icon">📂</div>
+        <p>Belum ada data pembayaran.<br>Tap <strong>+ Tambah Pembayaran</strong> untuk mulai.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- MODAL TAMBAH / EDIT -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modal-title">Tambah Pembayaran</h2>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Bulan ke-</label>
+          <input type="number" id="f-bulan" placeholder="Contoh: 1" min="1" />
+        </div>
+        <div class="form-group">
+          <label>Nama Bulan</label>
+          <select id="f-nama-bulan">
+            <option value="">Pilih bulan…</option>
+            <option>Januari</option><option>Februari</option><option>Maret</option>
+            <option>April</option><option>Mei</option><option>Juni</option>
+            <option>Juli</option><option>Agustus</option><option>September</option>
+            <option>Oktober</option><option>November</option><option>Desember</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tahun</label>
+          <input type="number" id="f-tahun" placeholder="2024" min="2020" max="2040" />
+        </div>
+        <div class="form-group">
+          <label>Tanggal Bayar</label>
+          <input type="date" id="f-tanggal" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Jumlah Pembayaran (Rp)</label>
+        <input type="number" id="f-jumlah" placeholder="Contoh: 1250000" />
+      </div>
+      <div class="form-group">
+        <label>Jenis Pembayaran</label>
+        <select id="f-jenis">
+          <option value="">Pilih metode…</option>
+          <option value="Transfer Bank">Transfer Bank</option>
+          <option value="Tunai">Tunai</option>
+          <option value="Virtual Account">Virtual Account</option>
+          <option value="QRIS">QRIS</option>
+          <option value="Debit Otomatis">Debit Otomatis</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="f-status">
+          <option value="Lunas">✅ Lunas</option>
+          <option value="Belum">⏳ Belum Dibayar</option>
+          <option value="Telat">⚠️ Terlambat</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Foto Struk (Opsional)</label>
+        <div class="foto-upload-area" id="foto-upload-area">
+          <img id="foto-preview" style="display:none;width:100%;max-height:180px;object-fit:contain;border-radius:10px;margin-bottom:10px;" alt="Preview struk" />
+          <div id="foto-placeholder" style="margin-bottom:10px;">
+            <div style="font-size:28px;margin-bottom:6px;">📸</div>
+            <div style="font-size:13px;color:#8A8A8A;font-weight:500;">Pilih foto struk dari perangkat</div>
+            <div style="font-size:11px;color:#8A8A8A;margin-top:4px;">JPG, PNG, WEBP — Maks. 5MB</div>
+          </div>
+          <input type="file" id="f-foto" accept="image/*" onchange="handleFoto(event)"
+            style="display:block;width:100%;padding:8px;border:1.5px solid #E8E0D8;border-radius:8px;font-family:inherit;font-size:13px;background:#fff;cursor:pointer;" />
+          <button type="button" id="btn-hapus-foto" onclick="hapusFoto()" style="display:none;margin-top:8px;background:none;border:1.5px solid #E8E0D8;padding:7px 14px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:700;color:#D72B2B;cursor:pointer;">🗑️ Hapus Foto</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Catatan (Opsional)</label>
+        <input type="text" id="f-catatan" placeholder="Contoh: Bayar via ATM BCA" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary btn-full" onclick="closeModal()">Batal</button>
+      <button class="btn-primary btn-full" onclick="saveData()">💾 Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FOTO -->
+<div class="foto-modal-overlay" id="foto-modal" onclick="closeFotoModal()">
+  <div class="foto-modal-inner" onclick="event.stopPropagation()">
+    <button class="foto-close-btn" onclick="closeFotoModal()">✕</button>
+    <img id="foto-full" src="" alt="Struk pembayaran" />
+  </div>
+</div>
+
+<!-- CONFIRM DIALOG -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="c-icon">🗑️</div>
+    <h3>Hapus Data?</h3>
+    <p id="confirm-msg">Data ini akan dihapus permanen.</p>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeConfirm()">Batal</button>
+      <button class="confirm-ok" onclick="doConfirm()">Hapus</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── DATA ──────────────────────────────────────────────────────────────────
+  // Reset jika versi data lama
+  const DATA_VER = 'v3';
+  if (localStorage.getItem('genio-ver') !== DATA_VER) {
+    localStorage.removeItem('genio-cicilan');
+    localStorage.setItem('genio-ver', DATA_VER);
+  }
+  let data = JSON.parse(localStorage.getItem('genio-cicilan') || '[]');
+  let editIdx = null;
+  let currentFotoB64 = null;
+  let activeFilter = 'semua';
+
+  // ── INIT DEMO DATA ────────────────────────────────────────────────────────
+  if (data.length === 0) {
+    const demo = [
+      { bulan: 1, namaBulan: 'Mei', tahun: 2026, tanggal: '2026-05-18', jumlah: 0, jenis: 'Transfer Bank', status: 'Lunas', foto: null, catatan: 'Pembayaran pertama' },
+      { bulan: 2, namaBulan: 'Juni', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 3, namaBulan: 'Juli', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 4, namaBulan: 'Agustus', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 5, namaBulan: 'September', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 6, namaBulan: 'Oktober', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 7, namaBulan: 'November', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 8, namaBulan: 'Desember', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 9, namaBulan: 'Januari', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 10, namaBulan: 'Februari', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 11, namaBulan: 'Maret', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 12, namaBulan: 'April', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 13, namaBulan: 'Mei', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 14, namaBulan: 'Juni', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 15, namaBulan: 'Juli', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 16, namaBulan: 'Agustus', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 17, namaBulan: 'September', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 18, namaBulan: 'Oktober', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 19, namaBulan: 'November', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 20, namaBulan: 'Desember', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 21, namaBulan: 'Januari', tahun: 2028, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 22, namaBulan: 'Februari', tahun: 2028, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 23, namaBulan: 'Maret', tahun: 2028, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
+      { bulan: 24, namaBulan: 'April', tahun: 2028, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' }
+    ];
+    data = demo;
+    saveLocal();
+  }
+
+  function saveLocal() {
+    localStorage.setItem('genio-cicilan', JSON.stringify(data));
+  }
+
+  // ── RENDER ────────────────────────────────────────────────────────────────
+  function render() {
+    const tbody = document.getElementById('table-body');
+    const empty = document.getElementById('empty-state');
+    let filtered = data;
+    if (activeFilter === 'lunas')  filtered = data.filter(d => d.status === 'Lunas');
+    if (activeFilter === 'belum')  filtered = data.filter(d => d.status !== 'Lunas');
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '';
+      empty.style.display = 'block';
+    } else {
+      empty.style.display = 'none';
+      tbody.innerHTML = filtered.map((row, i) => {
+        const realIdx = data.indexOf(row);
+        const jenisClass = {
+          'Transfer Bank': 'jenis-transfer',
+          'Tunai': 'jenis-tunai',
+          'Virtual Account': 'jenis-va',
+          'QRIS': 'jenis-qris',
+          'Debit Otomatis': 'jenis-transfer',
+        }[row.jenis] || '';
+        const statusClass = row.status === 'Lunas' ? 'status-lunas' : row.status === 'Telat' ? 'status-telat' : 'status-belum';
+        const dotClass = row.status === 'Lunas' ? 'dot-lunas' : row.status === 'Telat' ? 'dot-telat' : 'dot-belum';
+        const fmtTanggal = row.tanggal
+          ? new Date(row.tanggal + 'T00:00:00').toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' })
+          : '—';
+        const fmtJumlah = 'Rp ' + row.jumlah.toLocaleString('id-ID');
+        const struktBtn = row.foto
+          ? `<button class="struk-btn has-foto" onclick="viewFoto(${realIdx})">📷 Lihat</button>`
+          : `<button class="struk-btn" onclick="uploadFotoFor(${realIdx})">📤 Upload</button>`;
+
+        return `<tr>
+          <td><span class="bulan-badge">Ke-${row.bulan}</span><br><span style="font-size:12px;color:var(--muted)">${row.namaBulan} ${row.tahun}</span></td>
+          <td class="tanggal-cell">${fmtTanggal}</td>
+          <td class="jumlah-cell">${fmtJumlah}</td>
+          <td>${row.jenis ? `<span class="jenis-badge ${jenisClass}">${row.jenis}</span>` : '<span style="color:var(--muted);font-size:12px">—</span>'}</td>
+          <td><span class="status-badge ${statusClass}"><span class="status-dot ${dotClass}"></span>${row.status}</span></td>
+          <td>${struktBtn}</td>
+          <td>
+            <button class="action-btn" onclick="editData(${realIdx})" title="Edit">✏️</button>
+            <button class="action-btn" onclick="deleteData(${realIdx})" title="Hapus">🗑️</button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+    updateSummary();
+  }
+
+  function updateSummary() {
+    const lunas  = data.filter(d => d.status === 'Lunas');
+    const belum  = data.filter(d => d.status !== 'Lunas');
+    const lunasBulan = lunas.length;
+    const sisaBulan  = belum.length;
+    const totalBulan = data.length;
+
+    // Hitung nominal: pakai jumlah yang sudah diisi, fallback ke rata-rata yg ada
+    const sudahBayar = lunas.reduce((s,d) => s + (d.jumlah||0), 0);
+    // Cari nominal per bulan dari data yang sudah ada jumlahnya
+    const contohJumlah = data.find(d => d.jumlah > 0);
+    const nominalPerBulan = contohJumlah ? contohJumlah.jumlah : 0;
+    const totalTagihan = nominalPerBulan > 0
+      ? nominalPerBulan * totalBulan
+      : data.reduce((s,d) => s + (d.jumlah||0), 0);
+    const sisaTagihan = nominalPerBulan > 0
+      ? nominalPerBulan * sisaBulan
+      : totalTagihan - sudahBayar;
+
+    const pct = totalBulan > 0 ? Math.round((lunasBulan / totalBulan) * 100) : 0;
+
+    document.getElementById('sum-total').textContent = totalTagihan > 0 ? 'Rp ' + totalTagihan.toLocaleString('id-ID') : '—';
+    document.getElementById('sum-bulan-total').textContent = totalBulan + ' Bulan';
+    document.getElementById('sum-bayar').textContent = sudahBayar > 0 ? 'Rp ' + sudahBayar.toLocaleString('id-ID') : '—';
+    document.getElementById('sum-lunas-bulan').textContent = lunasBulan + ' bulan';
+    document.getElementById('sum-sisa').textContent = sisaTagihan > 0 ? 'Rp ' + sisaTagihan.toLocaleString('id-ID') : sisaBulan + ' bln';
+    document.getElementById('sum-sisa-bulan').textContent = sisaBulan + ' bulan tersisa';
+
+    // Tagihan berikutnya = bulan belum bayar paling awal
+    const next = belum[0];
+    if (next) {
+      document.getElementById('sum-next').textContent = 'Ke-' + next.bulan;
+      document.getElementById('sum-next-date').textContent = next.namaBulan + ' ' + next.tahun;
+    } else {
+      document.getElementById('sum-next').textContent = '🎉';
+      document.getElementById('sum-next-date').textContent = 'Semua lunas!';
+    }
+
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('pct-text').textContent = pct + '%';
+    document.getElementById('meta-lunas').textContent = lunasBulan + ' bulan lunas';
+    document.getElementById('meta-sisa').textContent = sisaBulan + ' bulan belum';
+  }
+
+  // ── MODAL ─────────────────────────────────────────────────────────────────
+  function openModal(idx = null) {
+    editIdx = idx;
+    currentFotoB64 = null;
+    document.getElementById('modal-title').textContent = idx !== null ? 'Edit Pembayaran' : 'Tambah Pembayaran';
+    document.getElementById('f-bulan').value = '';
+    document.getElementById('f-nama-bulan').value = '';
+    document.getElementById('f-tahun').value = '';
+    document.getElementById('f-tanggal').value = '';
+    document.getElementById('f-jumlah').value = '';
+    document.getElementById('f-jenis').value = '';
+    document.getElementById('f-status').value = 'Lunas';
+    document.getElementById('f-catatan').value = '';
+    document.getElementById('foto-preview').style.display = 'none';
+    document.getElementById('foto-preview').src = '';
+    document.getElementById('foto-placeholder').style.display = 'block';
+    document.getElementById('btn-hapus-foto').style.display = 'none';
+    document.getElementById('f-foto').value = '';
+
+    if (idx !== null) {
+      const row = data[idx];
+      document.getElementById('f-bulan').value = row.bulan;
+      document.getElementById('f-nama-bulan').value = row.namaBulan;
+      document.getElementById('f-tahun').value = row.tahun;
+      document.getElementById('f-tanggal').value = row.tanggal;
+      document.getElementById('f-jumlah').value = row.jumlah;
+      document.getElementById('f-jenis').value = row.jenis;
+      document.getElementById('f-status').value = row.status;
+      document.getElementById('f-catatan').value = row.catatan;
+      if (row.foto) {
+        currentFotoB64 = row.foto;
+        const prev = document.getElementById('foto-preview');
+        prev.src = row.foto;
+        prev.style.display = 'block';
+        document.getElementById('foto-placeholder').style.display = 'none';
+        document.getElementById('btn-hapus-foto').style.display = 'inline-block';
+      }
+    }
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  }
+
+  function saveData() {
+    const bulan = parseInt(document.getElementById('f-bulan').value);
+    const namaBulan = document.getElementById('f-nama-bulan').value.trim();
+    const tahun = parseInt(document.getElementById('f-tahun').value);
+    const tanggal = document.getElementById('f-tanggal').value;
+    const jumlah = parseFloat(document.getElementById('f-jumlah').value);
+    const jenis = document.getElementById('f-jenis').value;
+    const status = document.getElementById('f-status').value;
+    const catatan = document.getElementById('f-catatan').value.trim();
+
+    if (!bulan || !namaBulan || !tahun || !jumlah) {
+      showToast('⚠️ Lengkapi data wajib (Bulan, Nama, Tahun, Jumlah)');
+      return;
+    }
+
+    const row = { bulan, namaBulan, tahun, tanggal, jumlah, jenis, status, foto: currentFotoB64, catatan };
+    if (editIdx !== null) {
+      data[editIdx] = row;
+    } else {
+      data.push(row);
+      data.sort((a,b) => a.bulan - b.bulan || a.tahun - b.tahun);
+    }
+    saveLocal();
+    render();
+    closeModal();
+    showToast(editIdx !== null ? '✅ Data berhasil diperbarui!' : '✅ Pembayaran berhasil ditambahkan!');
+  }
+
+  function editData(idx) { openModal(idx); }
+
+  let confirmCallback = null;
+  function deleteData(idx) {
+    document.getElementById('confirm-msg').textContent = 'Data cicilan bulan ke-' + data[idx].bulan + ' (' + data[idx].namaBulan + ' ' + data[idx].tahun + ') akan dihapus permanen.';
+    document.getElementById('confirm-overlay').classList.add('open');
+    confirmCallback = () => {
+      data.splice(idx, 1);
+      saveLocal(); render();
+      showToast('🗑️ Data berhasil dihapus');
+    };
+  }
+  function doConfirm() {
+    closeConfirm();
+    if (confirmCallback) { confirmCallback(); confirmCallback = null; }
+  }
+  function closeConfirm() {
+    document.getElementById('confirm-overlay').classList.remove('open');
+  }
+
+  // ── FOTO ──────────────────────────────────────────────────────────────────
+  function handleFoto(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { showToast('⚠️ Foto terlalu besar (maks. 5MB)'); return; }
+    const reader = new FileReader();
+    reader.onload = ev => {
+      currentFotoB64 = ev.target.result;
+      const prev = document.getElementById('foto-preview');
+      prev.src = currentFotoB64;
+      prev.style.display = 'block';
+      document.getElementById('foto-placeholder').style.display = 'none';
+      document.getElementById('btn-hapus-foto').style.display = 'inline-block';
+      showToast('✅ Foto berhasil dipilih!');
+    };
+    reader.readAsDataURL(file);
+  }
+  function hapusFoto() {
+    currentFotoB64 = null;
+    document.getElementById('foto-preview').src = '';
+    document.getElementById('foto-preview').style.display = 'none';
+    document.getElementById('foto-placeholder').style.display = 'block';
+    document.getElementById('btn-hapus-foto').style.display = 'none';
+    document.getElementById('f-foto').value = '';
+  }
+
+  function viewFoto(idx) {
+    if (!data[idx].foto) return;
+    document.getElementById('foto-full').src = data[idx].foto;
+    document.getElementById('foto-modal').classList.add('open');
+  }
+
+  function closeFotoModal() {
+    document.getElementById('foto-modal').classList.remove('open');
+  }
+
+  function uploadFotoFor(idx) {
+    editIdx = idx;
+    openModal(idx);
+  }
+
+  // ── FILTER / TAB ──────────────────────────────────────────────────────────
+  function setTab(el, filter) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    activeFilter = filter;
+    render();
+  }
+
+  function filterData(f) {
+    activeFilter = f;
+    document.querySelectorAll('.filter-tab').forEach((t,i) => {
+      t.classList.toggle('active', ['semua','lunas','belum'][i] === f);
+    });
+    render();
+  }
+
+  // ── EXPORT ────────────────────────────────────────────────────────────────
+  function exportData() {
+    const rows = [['Bulan Ke', 'Nama Bulan', 'Tahun', 'Tanggal Bayar', 'Jumlah (Rp)', 'Jenis Pembayaran', 'Status', 'Catatan']];
+    data.forEach(d => rows.push([d.bulan, d.namaBulan, d.tahun, d.tanggal || '—', d.jumlah, d.jenis || '—', d.status, d.catatan || '—']));
+    const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'cicilan-genio.csv'; a.click();
+    showToast('📥 Data berhasil diekspor ke CSV');
+  }
+
+  // ── TOAST ─────────────────────────────────────────────────────────────────
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ── START ─────────────────────────────────────────────────────────────────
+  render();
+</script>
+</body>
+</html>
