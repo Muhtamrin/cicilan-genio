@@ -736,61 +736,67 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // ── DATA ──────────────────────────────────────────────────────────────────
-  // Reset jika versi data lama
-  const DATA_VER = 'v3';
-  if (localStorage.getItem('genio-ver') !== DATA_VER) {
-    localStorage.removeItem('genio-cicilan');
-    localStorage.setItem('genio-ver', DATA_VER);
-  }
-  let data = JSON.parse(localStorage.getItem('genio-cicilan') || '[]');
-  let editIdx = null;
-  let currentFotoB64 = null;
+  // PASTE LINK CSV GOOGLE SHEETS ANDA DI SINI
+  const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS5DMtEMyxGkT2HFC4HPqLGpVATCc1iwaiTzscaxXsWH-tSo7Q-djzJUOkIcNxA1usVg70KGnCgT3gS/pub?gid=0&single=true&output=csv";
+
+  let data = [];
   let activeFilter = 'semua';
 
-  // ── INIT DEMO DATA ────────────────────────────────────────────────────────
-  if (data.length === 0) {
-    const demo = [
-      { bulan: 1, namaBulan: 'Mei', tahun: 2026, tanggal: '2026-05-18', jumlah: 0, jenis: 'Transfer Bank', status: 'Lunas', foto: null, catatan: 'Pembayaran pertama' },
-      { bulan: 2, namaBulan: 'Juni', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 3, namaBulan: 'Juli', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 4, namaBulan: 'Agustus', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 5, namaBulan: 'September', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 6, namaBulan: 'Oktober', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 7, namaBulan: 'November', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 8, namaBulan: 'Desember', tahun: 2026, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 9, namaBulan: 'Januari', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 10, namaBulan: 'Februari', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 11, namaBulan: 'Maret', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 12, namaBulan: 'April', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 13, namaBulan: 'Mei', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 14, namaBulan: 'Juni', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 15, namaBulan: 'Juli', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 16, namaBulan: 'Agustus', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 17, namaBulan: 'September', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 18, namaBulan: 'Oktober', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 19, namaBulan: 'November', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 20, namaBulan: 'Desember', tahun: 2027, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 21, namaBulan: 'Januari', tahun: 2028, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 22, namaBulan: 'Februari', tahun: 2028, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 23, namaBulan: 'Maret', tahun: 2028, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' },
-      { bulan: 24, namaBulan: 'April', tahun: 2028, tanggal: '', jumlah: 0, jenis: '', status: 'Belum', foto: null, catatan: '' }
-    ];
-    data = demo;
-    saveLocal();
+  // ── AMBIL DATA DARI GOOGLE SHEETS ──────────────────────────────────────────
+  async function loadDataFromSheets() {
+    try {
+      const response = await fetch(SHEET_CSV_URL);
+      const csvText = await response.text();
+      
+      // Pecah baris teks CSV
+      const lines = csvText.split('\n').map(line => line.trim()).filter(line => line);
+      const newData = [];
+
+      // Membaca baris data (lewati baris 1-7 jika ada header/summary di atas tabel)
+      // Jika baris pertama CSV langsung merupakan header tabel ("Bulan Ke"), ubah i = 1
+      for (let i = 1; i < lines.length; i++) {
+        // Pemisah kolom berbasis koma di dalam tanda kutip
+        const matches = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+        if (matches && matches.length >= 7) {
+          const clean = matches.map(v => v.replace(/^"|"$/g, '').trim());
+          
+          // Lewati jika kolom Bulan Ke bukan angka valid
+          const bulanNum = parseInt(clean[0]);
+          if (isNaN(bulanNum)) continue;
+
+          // Bersihkan format mata uang Rp jika ada dari Sheets
+          const cleanJumlah = clean[2].replace(/[^0-9.-]+/g, "");
+
+          newData.push({
+            bulan: bulanNum,
+            namaBulan: clean[1],
+            jumlah: parseFloat(cleanJumlah) || 0,
+            tahun: parseInt(clean[3]) || 2026,
+            tanggal: clean[4] === '—' || !clean[4] ? '' : clean[4],
+            jenis: clean[5] === '—' || !clean[5] ? '' : clean[5],
+            status: clean[6] || 'Belum Dibayar',
+            foto: null,
+            catatan: clean[7] === '—' || !clean[7] ? '' : clean[7]
+          });
+        }
+      }
+
+      data = newData;
+      render();
+    } catch (error) {
+      console.error("Gagal memuat data dari Google Sheets:", error);
+      showToast("❌ Gagal menyinkronkan data dari Cloud");
+    }
   }
 
-  function saveLocal() {
-    localStorage.setItem('genio-cicilan', JSON.stringify(data));
-  }
-
-  // ── RENDER ────────────────────────────────────────────────────────────────
+  // ── RENDER TABEL ──────────────────────────────────────────────────────────
   function render() {
     const tbody = document.getElementById('table-body');
     const empty = document.getElementById('empty-state');
     let filtered = data;
-    if (activeFilter === 'lunas')  filtered = data.filter(d => d.status === 'Lunas');
-    if (activeFilter === 'belum')  filtered = data.filter(d => d.status !== 'Lunas');
+    
+    if (activeFilter === 'lunas')  filtered = data.filter(d => d.status.toLowerCase() === 'lunas');
+    if (activeFilter === 'belum')  filtered = data.filter(d => d.status.toLowerCase() !== 'lunas');
 
     if (filtered.length === 0) {
       tbody.innerHTML = '';
@@ -806,15 +812,15 @@
           'QRIS': 'jenis-qris',
           'Debit Otomatis': 'jenis-transfer',
         }[row.jenis] || '';
-        const statusClass = row.status === 'Lunas' ? 'status-lunas' : row.status === 'Telat' ? 'status-telat' : 'status-belum';
-        const dotClass = row.status === 'Lunas' ? 'dot-lunas' : row.status === 'Telat' ? 'dot-telat' : 'dot-belum';
-        const fmtTanggal = row.tanggal
-          ? new Date(row.tanggal + 'T00:00:00').toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' })
-          : '—';
+
+        const isLunas = row.status.toLowerCase() === 'lunas';
+        const isTelat = row.status.toLowerCase() === 'terlambat' || row.status.toLowerCase() === 'telat';
+        
+        const statusClass = isLunas ? 'status-lunas' : (isTelat ? 'status-telat' : 'status-belum');
+        const dotClass = isLunas ? 'dot-lunas' : (isTelat ? 'dot-telat' : 'dot-belum');
+        
+        const fmtTanggal = row.tanggal ? row.tanggal : '—';
         const fmtJumlah = 'Rp ' + row.jumlah.toLocaleString('id-ID');
-        const struktBtn = row.foto
-          ? `<button class="struk-btn has-foto" onclick="viewFoto(${realIdx})">📷 Lihat</button>`
-          : `<button class="struk-btn" onclick="uploadFotoFor(${realIdx})">📤 Upload</button>`;
 
         return `<tr>
           <td><span class="bulan-badge">Ke-${row.bulan}</span><br><span style="font-size:12px;color:var(--muted)">${row.namaBulan} ${row.tahun}</span></td>
@@ -822,10 +828,9 @@
           <td class="jumlah-cell">${fmtJumlah}</td>
           <td>${row.jenis ? `<span class="jenis-badge ${jenisClass}">${row.jenis}</span>` : '<span style="color:var(--muted);font-size:12px">—</span>'}</td>
           <td><span class="status-badge ${statusClass}"><span class="status-dot ${dotClass}"></span>${row.status}</span></td>
-          <td>${struktBtn}</td>
+          <td><span style="color:var(--muted);font-size:12px">Synced</span></td>
           <td>
-            <button class="action-btn" onclick="editData(${realIdx})" title="Edit">✏️</button>
-            <button class="action-btn" onclick="deleteData(${realIdx})" title="Hapus">🗑️</button>
+            <span style="color:var(--muted);font-size:11px">Edit via Sheets</span>
           </td>
         </tr>`;
       }).join('');
@@ -834,23 +839,15 @@
   }
 
   function updateSummary() {
-    const lunas  = data.filter(d => d.status === 'Lunas');
-    const belum  = data.filter(d => d.status !== 'Lunas');
+    const lunas  = data.filter(d => d.status.toLowerCase() === 'lunas');
+    const belum  = data.filter(d => d.status.toLowerCase() !== 'lunas');
     const lunasBulan = lunas.length;
     const sisaBulan  = belum.length;
     const totalBulan = data.length;
 
-    // Hitung nominal: pakai jumlah yang sudah diisi, fallback ke rata-rata yg ada
     const sudahBayar = lunas.reduce((s,d) => s + (d.jumlah||0), 0);
-    // Cari nominal per bulan dari data yang sudah ada jumlahnya
-    const contohJumlah = data.find(d => d.jumlah > 0);
-    const nominalPerBulan = contohJumlah ? contohJumlah.jumlah : 0;
-    const totalTagihan = nominalPerBulan > 0
-      ? nominalPerBulan * totalBulan
-      : data.reduce((s,d) => s + (d.jumlah||0), 0);
-    const sisaTagihan = nominalPerBulan > 0
-      ? nominalPerBulan * sisaBulan
-      : totalTagihan - sudahBayar;
+    const totalTagihan = data.reduce((s,d) => s + (d.jumlah||0), 0);
+    const sisaTagihan = totalTagihan - sudahBayar;
 
     const pct = totalBulan > 0 ? Math.round((lunasBulan / totalBulan) * 100) : 0;
 
@@ -861,7 +858,6 @@
     document.getElementById('sum-sisa').textContent = sisaTagihan > 0 ? 'Rp ' + sisaTagihan.toLocaleString('id-ID') : sisaBulan + ' bln';
     document.getElementById('sum-sisa-bulan').textContent = sisaBulan + ' bulan tersisa';
 
-    // Tagihan berikutnya = bulan belum bayar paling awal
     const next = belum[0];
     if (next) {
       document.getElementById('sum-next').textContent = 'Ke-' + next.bulan;
@@ -877,145 +873,6 @@
     document.getElementById('meta-sisa').textContent = sisaBulan + ' bulan belum';
   }
 
-  // ── MODAL ─────────────────────────────────────────────────────────────────
-  function openModal(idx = null) {
-    editIdx = idx;
-    currentFotoB64 = null;
-    document.getElementById('modal-title').textContent = idx !== null ? 'Edit Pembayaran' : 'Tambah Pembayaran';
-    document.getElementById('f-bulan').value = '';
-    document.getElementById('f-nama-bulan').value = '';
-    document.getElementById('f-tahun').value = '';
-    document.getElementById('f-tanggal').value = '';
-    document.getElementById('f-jumlah').value = '';
-    document.getElementById('f-jenis').value = '';
-    document.getElementById('f-status').value = 'Lunas';
-    document.getElementById('f-catatan').value = '';
-    document.getElementById('foto-preview').style.display = 'none';
-    document.getElementById('foto-preview').src = '';
-    document.getElementById('foto-placeholder').style.display = 'block';
-    document.getElementById('btn-hapus-foto').style.display = 'none';
-    document.getElementById('f-foto').value = '';
-
-    if (idx !== null) {
-      const row = data[idx];
-      document.getElementById('f-bulan').value = row.bulan;
-      document.getElementById('f-nama-bulan').value = row.namaBulan;
-      document.getElementById('f-tahun').value = row.tahun;
-      document.getElementById('f-tanggal').value = row.tanggal;
-      document.getElementById('f-jumlah').value = row.jumlah;
-      document.getElementById('f-jenis').value = row.jenis;
-      document.getElementById('f-status').value = row.status;
-      document.getElementById('f-catatan').value = row.catatan;
-      if (row.foto) {
-        currentFotoB64 = row.foto;
-        const prev = document.getElementById('foto-preview');
-        prev.src = row.foto;
-        prev.style.display = 'block';
-        document.getElementById('foto-placeholder').style.display = 'none';
-        document.getElementById('btn-hapus-foto').style.display = 'inline-block';
-      }
-    }
-    document.getElementById('modal-overlay').classList.add('open');
-  }
-
-  function closeModal() {
-    document.getElementById('modal-overlay').classList.remove('open');
-  }
-
-  function closeModalOutside(e) {
-    if (e.target === document.getElementById('modal-overlay')) closeModal();
-  }
-
-  function saveData() {
-    const bulan = parseInt(document.getElementById('f-bulan').value);
-    const namaBulan = document.getElementById('f-nama-bulan').value.trim();
-    const tahun = parseInt(document.getElementById('f-tahun').value);
-    const tanggal = document.getElementById('f-tanggal').value;
-    const jumlah = parseFloat(document.getElementById('f-jumlah').value);
-    const jenis = document.getElementById('f-jenis').value;
-    const status = document.getElementById('f-status').value;
-    const catatan = document.getElementById('f-catatan').value.trim();
-
-    if (!bulan || !namaBulan || !tahun || !jumlah) {
-      showToast('⚠️ Lengkapi data wajib (Bulan, Nama, Tahun, Jumlah)');
-      return;
-    }
-
-    const row = { bulan, namaBulan, tahun, tanggal, jumlah, jenis, status, foto: currentFotoB64, catatan };
-    if (editIdx !== null) {
-      data[editIdx] = row;
-    } else {
-      data.push(row);
-      data.sort((a,b) => a.bulan - b.bulan || a.tahun - b.tahun);
-    }
-    saveLocal();
-    render();
-    closeModal();
-    showToast(editIdx !== null ? '✅ Data berhasil diperbarui!' : '✅ Pembayaran berhasil ditambahkan!');
-  }
-
-  function editData(idx) { openModal(idx); }
-
-  let confirmCallback = null;
-  function deleteData(idx) {
-    document.getElementById('confirm-msg').textContent = 'Data cicilan bulan ke-' + data[idx].bulan + ' (' + data[idx].namaBulan + ' ' + data[idx].tahun + ') akan dihapus permanen.';
-    document.getElementById('confirm-overlay').classList.add('open');
-    confirmCallback = () => {
-      data.splice(idx, 1);
-      saveLocal(); render();
-      showToast('🗑️ Data berhasil dihapus');
-    };
-  }
-  function doConfirm() {
-    closeConfirm();
-    if (confirmCallback) { confirmCallback(); confirmCallback = null; }
-  }
-  function closeConfirm() {
-    document.getElementById('confirm-overlay').classList.remove('open');
-  }
-
-  // ── FOTO ──────────────────────────────────────────────────────────────────
-  function handleFoto(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) { showToast('⚠️ Foto terlalu besar (maks. 5MB)'); return; }
-    const reader = new FileReader();
-    reader.onload = ev => {
-      currentFotoB64 = ev.target.result;
-      const prev = document.getElementById('foto-preview');
-      prev.src = currentFotoB64;
-      prev.style.display = 'block';
-      document.getElementById('foto-placeholder').style.display = 'none';
-      document.getElementById('btn-hapus-foto').style.display = 'inline-block';
-      showToast('✅ Foto berhasil dipilih!');
-    };
-    reader.readAsDataURL(file);
-  }
-  function hapusFoto() {
-    currentFotoB64 = null;
-    document.getElementById('foto-preview').src = '';
-    document.getElementById('foto-preview').style.display = 'none';
-    document.getElementById('foto-placeholder').style.display = 'block';
-    document.getElementById('btn-hapus-foto').style.display = 'none';
-    document.getElementById('f-foto').value = '';
-  }
-
-  function viewFoto(idx) {
-    if (!data[idx].foto) return;
-    document.getElementById('foto-full').src = data[idx].foto;
-    document.getElementById('foto-modal').classList.add('open');
-  }
-
-  function closeFotoModal() {
-    document.getElementById('foto-modal').classList.remove('open');
-  }
-
-  function uploadFotoFor(idx) {
-    editIdx = idx;
-    openModal(idx);
-  }
-
-  // ── FILTER / TAB ──────────────────────────────────────────────────────────
   function setTab(el, filter) {
     document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
@@ -1031,28 +888,21 @@
     render();
   }
 
-  // ── EXPORT ────────────────────────────────────────────────────────────────
-  function exportData() {
-    const rows = [['Bulan Ke', 'Nama Bulan', 'Tahun', 'Tanggal Bayar', 'Jumlah (Rp)', 'Jenis Pembayaran', 'Status', 'Catatan']];
-    data.forEach(d => rows.push([d.bulan, d.namaBulan, d.tahun, d.tanggal || '—', d.jumlah, d.jenis || '—', d.status, d.catatan || '—']));
-    const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'cicilan-genio.csv'; a.click();
-    showToast('📥 Data berhasil diekspor ke CSV');
-  }
-
-  // ── TOAST ─────────────────────────────────────────────────────────────────
   function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
+    if(t) {
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
   }
 
-  // ── START ─────────────────────────────────────────────────────────────────
-  render();
+  // Tambahkan fungsi kosong agar button di HTML tidak error saat diklik
+  function openModal() { showToast("Silakan perbarui data langsung melalui Google Sheets."); }
+  function exportData() { showToast("Data otomatis terpusat di Google Sheets."); }
+
+  // ── JALANKAN DI AWAL ───────────────────────────────────────────────────────
+  loadDataFromSheets();
 </script>
 </body>
 </html>
